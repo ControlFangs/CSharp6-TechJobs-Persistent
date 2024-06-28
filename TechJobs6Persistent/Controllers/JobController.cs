@@ -12,8 +12,10 @@ using TechJobs6Persistent.ViewModels;
 
 namespace TechJobs6Persistent.Controllers
 {
+
     public class JobController : Controller
     {
+
         private JobDbContext context;
 
         public JobController(JobDbContext dbContext)
@@ -31,13 +33,34 @@ namespace TechJobs6Persistent.Controllers
 
         public IActionResult Add()
         {
-            return View();
+            
+               List<Employer> employers = context.Employers.ToList();
+            AddJobViewModel addJobViewModel = new AddJobViewModel(employers);
+
+            return View(addJobViewModel);
+            
         }
 
         [HttpPost]
-        public IActionResult ProcessAddJobForm()
+        public IActionResult Add(AddJobViewModel addJobViewModel)
         {
-            return View();
+      if (ModelState.IsValid)
+            {
+                Job TheJob = new Job
+                {
+                    Name = addJobViewModel.Name,
+                    EmployerId  = addJobViewModel.EmployerId,
+                    
+                
+                };
+
+                context.Jobs.Add(TheJob);
+                context.SaveChanges();
+
+                return Redirect("/");
+            }
+              return View("Add", addJobViewModel);
+           
         }
 
         public IActionResult Delete()

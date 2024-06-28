@@ -28,6 +28,8 @@ namespace TechJobs6Persistent.ViewModels
                 }
             }
         }
+
+  
     }
 }
 
